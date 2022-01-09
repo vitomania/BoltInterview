@@ -1,0 +1,103 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper, total={6in, 8in}]{geometry}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\title{Food delivery from restaurants}
+\author{Vitaly Kozhemyak}
+\date{January 2022}
+
+\begin{document}
+\maketitle
+\section{A top-down estimation of market size}
+In this section we consider Moscow as a city. We are going to use a \textbf{TAM-SAM-SOM} methodology to perform an estimation of market size.
+\subsection{TAM}
+According to \href{https://acdn.tinkoff.ru/static/documents/market-for-delivery-food-groceries-and-ready-made-rations.pdf}{\textcolor{blue}{this source}}, for a total of 135B RUB spent last year in Russia. 
+%The total number of people who live within the city limits is 12.4 million. In average you spend 1000 RUB on food delivery from resaurants. Suppose that a person makes 3 orders per month.
+$$
+\text{TAM} = 135 \text{B} \cdot 0.45 \sim 60 \text{B RUB.}
+$$
+\subsection{SAM}
+From all people in the city only 65\% are ready to order a food delivery from restaurants
+$$
+\text{SAM} = \text{TAM} \cdot 0.65 \cdot 0.95 \sim 37 \text{B RUB.}
+$$
+\subsection{SOM}
+Top 5 delivery companies
+$$
+\text{SOM} = \text{SAM} / 5 \sim 7.4 \text{B RUB.}
+$$
+\section{Unit economics with profitability per order}
+\begin{table}[H]
+\centering
+\begin{tabular}{|p{3cm}|p{10cm}|} 
+\hline
+\bfseries Parameter & \bfseries Description  \\
+\hline\hline
+DATE & Given in YYYY-mm-dd format.\\ 
+\hline
+avg temp & Average temperature for the day in degrees Celsius to tenths.\\
+\hline
+max temp & Maximum temperature reported during the day in Celsius to tenths.\\
+\hline
+min temp & Minimum temperature reported during the day in Celsius to tenths.\\
+\hline
+dew point & Average dew point for the day in degrees Celsius to tenths.\\
+\hline
+precipitation & Total precipitation (rain and/or melted snow) reported during the day in millimeters and hundredths.\\
+\hline
+max wind speed & Maximum sustained wind speed reported for the day in kmh to tenths.\\
+\hline
+condition & Occurrence during the day of: Fog, Rain or Drizzle, Snow or Ice Pellets, Hail, Thunder, Tornado or Funnel Cloud.\\
+\hline
+\end{tabular}
+\caption{Parameter descriptions.}
+\label{table:1}
+\end{table}
+\section{Units of measure}
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|} 
+\hline
+\bfseries Parameter & \bfseries Metric units  \\
+\hline\hline
+Temperature & c (celsius)\\ 
+\hline
+Wind Speed & km (kilometer/hour)\\ 
+\hline
+Precipitation Amount & mm (millimeters)\\ 
+\hline
+\end{tabular}
+\caption{Units of measure.}
+\label{table:1}
+\end{table}
+\section{API information}
+\url{https://www.ncei.noaa.gov/support/access-data-service-api-user-documentation}
+\section{Additional information}
+\begin{itemize}
+	\item Main source: \url{https://www.ncei.noaa.gov}
+	\item Description of the raw data: \url{https://www.ncei.noaa.gov/data/global-summary-of-the-day/doc/readme.txt}
+	\item Airport information: \url{https://www.ncei.noaa.gov/pub/data/noaa/isd-history.txt}
+	\item Country abbreviations: \url{https://www.ncei.noaa.gov/data/global-summary-of-the-day/doc/country-list.txt}
+\end{itemize}
+\section{Examples}
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{images/TEMP.png}
+\caption{MAX, AVG, MIN temperature. Units of measurements (Celsius)}
+\end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{images/MXSPD.png}
+\caption{Max wind speed (kmh)}
+\end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{images/PRCP.png}
+\caption{Precipitaion (mm)}
+\end{figure}
+\end{document}
