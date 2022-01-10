@@ -1,10 +1,11 @@
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
-\usepackage[a4paper, total={6in, 8in}]{geometry}
+\usepackage[a4paper, total={170mm,257mm}, left=20mm, top=20mm]{geometry}
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{float}
-\usepackage{xcolor}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{varwidth}
 \usepackage{hyperref}
 
 \title{Food delivery from restaurants}
@@ -13,91 +14,83 @@
 
 \begin{document}
 \maketitle
-\section{A top-down estimation of market size}
+\section{Business research}
+\subsection{A top-down estimation of market size}
 In this section we consider Moscow as a city. We are going to use a \textbf{TAM-SAM-SOM} methodology to perform an estimation of market size.
-\subsection{TAM}
+\paragraph{TAM.}
 According to \href{https://acdn.tinkoff.ru/static/documents/market-for-delivery-food-groceries-and-ready-made-rations.pdf}{\textcolor{blue}{this source}}, for a total of 135B RUB spent last year in Russia. 
 %The total number of people who live within the city limits is 12.4 million. In average you spend 1000 RUB on food delivery from resaurants. Suppose that a person makes 3 orders per month.
 $$
 \text{TAM} = 135 \text{B} \cdot 0.45 \sim 60 \text{B RUB.}
 $$
-\subsection{SAM}
+\paragraph{SAM.}
 From all people in the city only 65\% are ready to order a food delivery from restaurants
 $$
 \text{SAM} = \text{TAM} \cdot 0.65 \cdot 0.95 \sim 37 \text{B RUB.}
 $$
-\subsection{SOM}
+\paragraph{SOM.}
 Top 5 delivery companies
 $$
 \text{SOM} = \text{SAM} / 5 \sim 7.4 \text{B RUB.}
 $$
-\section{Unit economics with profitability per order}
+\subsection{Unit economics with profitability per order}
+
+\section{Data Anaysis}
+
+\subsection{Modeling results}
+To compare quailty of different models RMSE metric is used. We perform train-test splitting and use the test dataset to obtain the following results.
 \begin{table}[H]
 \centering
-\begin{tabular}{|p{3cm}|p{10cm}|} 
+\begin{tabular}{|p{4cm}|c|c|} 
 \hline
-\bfseries Parameter & \bfseries Description  \\
+\bfseries Model & \bfseries RMSE & \bfseries $\text{R}^2$  \\
 \hline\hline
-DATE & Given in YYYY-mm-dd format.\\ 
+Ridge regression & \textcolor{red}{0.43178} & 0.98734 \\
 \hline
-avg temp & Average temperature for the day in degrees Celsius to tenths.\\
+LightGBM & \textcolor{Green}{0.40342} & 0.98895 \\
 \hline
-max temp & Maximum temperature reported during the day in Celsius to tenths.\\
+Random Forest & \textcolor{red}{0.44910} & 0.98631 \\
 \hline
-min temp & Minimum temperature reported during the day in Celsius to tenths.\\
-\hline
-dew point & Average dew point for the day in degrees Celsius to tenths.\\
-\hline
-precipitation & Total precipitation (rain and/or melted snow) reported during the day in millimeters and hundredths.\\
-\hline
-max wind speed & Maximum sustained wind speed reported for the day in kmh to tenths.\\
-\hline
-condition & Occurrence during the day of: Fog, Rain or Drizzle, Snow or Ice Pellets, Hail, Thunder, Tornado or Funnel Cloud.\\
+Dense neural network & \textcolor{red}{0.55436} & 0.97914 \\
+\hline\hline
+\bfseries Baseline & 0.41872 & \\
 \hline
 \end{tabular}
-\caption{Parameter descriptions.}
-\label{table:1}
+\caption{Result table}
 \end{table}
-\section{Units of measure}
-\begin{table}[H]
+\subsection{Top opportunity to improve the upfront pricing precision}
+In addition to main features:
+\begin{figure}[H]
 \centering
-\begin{tabular}{|c|c|} 
-\hline
-\bfseries Parameter & \bfseries Metric units  \\
-\hline\hline
-Temperature & c (celsius)\\ 
-\hline
-Wind Speed & km (kilometer/hour)\\ 
-\hline
-Precipitation Amount & mm (millimeters)\\ 
-\hline
-\end{tabular}
-\caption{Units of measure.}
-\label{table:1}
-\end{table}
-\section{API information}
-\url{https://www.ncei.noaa.gov/support/access-data-service-api-user-documentation}
-\section{Additional information}
+\begin{varwidth}{\linewidth}
+\begin{verbatim}
+['gps_confidence', 'predicted_distance', 
+ 'predicted_duration', 'eu_indicator', 
+ 'overpaid_ride_ticket', 'dest_change_number',
+ 'prediction_price_type', 'change_reason_pricing',
+ 'entered_by']
+\end{verbatim}
+\end{varwidth}
+\caption{Main features}
+\end{figure}
+I suggest we use features such as
+\begin{figure}[H]
+\centering
+\begin{varwidth}{\linewidth}
+\begin{verbatim}
+['day_of_week', 'is_weekend', 
+ 'part_of_day', 'speed', 
+ 'isairport_2000', 'isairport_6000']
+\end{verbatim}
+\end{varwidth}
+\caption{Additional features}
+\end{figure}
+As I mentioned before in \textit{Data\_Analysis.ipynb} that the next features
+\texttt{['isairport\_2000', 'isairport\_6000']} could be derived from GPS-coordinates. Also if I knew pickup and dropoff coordinates I would add:
 \begin{itemize}
-	\item Main source: \url{https://www.ncei.noaa.gov}
-	\item Description of the raw data: \url{https://www.ncei.noaa.gov/data/global-summary-of-the-day/doc/readme.txt}
-	\item Airport information: \url{https://www.ncei.noaa.gov/pub/data/noaa/isd-history.txt}
-	\item Country abbreviations: \url{https://www.ncei.noaa.gov/data/global-summary-of-the-day/doc/country-list.txt}
+\item weather conditions,
+\item the most visited places,
+\item good/bad neighbourhoods,
+\item some data from similar ride-hailing applications.
 \end{itemize}
-\section{Examples}
-\begin{figure}[H]
-\centering
-\includegraphics[width=\textwidth]{images/TEMP.png}
-\caption{MAX, AVG, MIN temperature. Units of measurements (Celsius)}
-\end{figure}
-\begin{figure}[H]
-\centering
-\includegraphics[width=\textwidth]{images/MXSPD.png}
-\caption{Max wind speed (kmh)}
-\end{figure}
-\begin{figure}[H]
-\centering
-\includegraphics[width=\textwidth]{images/PRCP.png}
-\caption{Precipitaion (mm)}
-\end{figure}
 \end{document}
