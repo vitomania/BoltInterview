@@ -8,36 +8,14 @@
 \usepackage{varwidth}
 \usepackage{hyperref}
 
-\title{Food delivery from restaurants}
+\title{Data Analysis}
 \author{Vitaly Kozhemyak}
 \date{January 2022}
 
 \begin{document}
 \maketitle
-\section{Business research}
-\subsection{A top-down estimation of market size}
-In this section we consider Moscow as a city. We are going to use a \textbf{TAM-SAM-SOM} methodology to perform an estimation of market size.
-\paragraph{TAM.}
-According to \href{https://acdn.tinkoff.ru/static/documents/market-for-delivery-food-groceries-and-ready-made-rations.pdf}{\textcolor{blue}{this source}}, for a total of 135B RUB spent last year in Russia. 
-%The total number of people who live within the city limits is 12.4 million. In average you spend 1000 RUB on food delivery from resaurants. Suppose that a person makes 3 orders per month.
-$$
-\text{TAM} = 135 \text{B} \cdot 0.45 \sim 60 \text{B RUB.}
-$$
-\paragraph{SAM.}
-From all people in the city only 65\% are ready to order a food delivery from restaurants
-$$
-\text{SAM} = \text{TAM} \cdot 0.65 \cdot 0.95 \sim 37 \text{B RUB.}
-$$
-\paragraph{SOM.}
-Top 5 delivery companies
-$$
-\text{SOM} = \text{SAM} / 5 \sim 7.4 \text{B RUB.}
-$$
-\subsection{Unit economics with profitability per order}
 
-\section{Data Anaysis}
-
-\subsection{Modeling results}
+\section{Modeling results}
 To compare quailty of different models RMSE metric is used. We perform train-test splitting and use the test dataset to obtain the following results.
 \begin{table}[H]
 \centering
@@ -58,7 +36,7 @@ Dense neural network & \textcolor{red}{0.55436} & 0.97914 \\
 \end{tabular}
 \caption{Result table}
 \end{table}
-\subsection{Top opportunity to improve the upfront pricing precision}
+\section{Top opportunity to improve the upfront pricing precision}
 In addition to main features:
 \begin{figure}[H]
 \centering
